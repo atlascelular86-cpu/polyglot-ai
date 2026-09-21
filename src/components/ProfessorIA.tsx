@@ -170,6 +170,20 @@ export function ProfessorIA({ idioma, topico }: { idioma: Language; topico: stri
               {feedback.correcao}
             </p>
           )}
+          {feedback.fraseCorrigida && (
+            <div className="mt-2 rounded-xl bg-lime/25 p-3 ring-1 ring-ink/20">
+              <p className="text-sm">
+                <span className="font-bold">Fale assim: </span>
+                {feedback.fraseCorrigida}
+              </p>
+              <button
+                onClick={() => falarEmVozAlta(feedback.fraseCorrigida)}
+                className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-berry px-3 py-1.5 text-xs font-bold text-cream ring-1 ring-ink"
+              >
+                🔊 Ouvir e repetir
+              </button>
+            </div>
+          )}
           {feedback.dica && (
             <p className="mt-1 text-sm text-ink/70">
               <span className="font-bold">Dica: </span>
