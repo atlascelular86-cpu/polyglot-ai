@@ -18,6 +18,34 @@
  * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
+@theme {
+  --color-cream: #faf3e3;
+  --color-ink: #1c1a17;
+  --color-sun: #ff5a2c;
+  --color-berry: #7c36a3;
+  --color-grape: #5a2f80;
+  --color-lime: #b7e10f;
+  --color-tang: #ffb020;
+  --color-mist: #efe7d2;
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+}
+
+@keyframes pulseBar {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.35);
+  }
+}
+
+@utility pulse-bar {
+  transform-origin: bottom;
+  animation: pulseBar 1s ease-in-out infinite;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
