@@ -15,6 +15,7 @@ export type RespostaProfessor = {
   resposta: string;
   traducao: string;
   correcao: string;
+  fraseCorrigida: string;
   nota: number;
   dica: string;
 };
@@ -26,14 +27,16 @@ export const conversarComProfessor = createServerFn({ method: "POST" })
     if (!key) throw new Error("Chave de IA ausente");
 
     const sistema = [
-      `Você é um professor de ${data.idioma} para alunos brasileiros, praticando o tema "${data.topico}".`,
+      `Você é um professor particular de ${data.idioma} para alunos brasileiros, praticando o tema "${data.topico}".`,
+      `Sua missão é corrigir cada fala do aluno e ensiná-lo a falar corretamente, como um professor paciente e motivador.`,
       `Responda SEMPRE em JSON válido, sem markdown, com as chaves:`,
-      `"resposta" (1-2 frases em ${data.idioma}, continuando a conversa e fazendo uma pergunta),`,
+      `"correcao" (em português: aponte exatamente o que o aluno errou de gramática, vocabulário ou pronúncia e explique POR QUE está errado, em 1-2 frases didáticas; se estiver perfeito, elogie em 1 frase),`,
+      `"fraseCorrigida" (a fala do aluno reescrita corretamente em ${data.idioma}, do jeito que um nativo falaria; se a fala já estava perfeita, repita-a),`,
+      `"dica" (uma dica curta e prática em português para o aluno acertar da próxima vez — pronúncia, regra ou macete),`,
+      `"resposta" (1-2 frases em ${data.idioma}, continuando a conversa e fazendo uma pergunta para o aluno praticar),`,
       `"traducao" (a resposta traduzida para português do Brasil),`,
-      `"correcao" (em português, o que o aluno errou na fala dele; se estiver certo, elogie em 1 frase),`,
-      `"nota" (número de 0 a 100 avaliando a fala do aluno),`,
-      `"dica" (uma dica curta de pronúncia em português).`,
-      `Use vocabulário simples e adequado a iniciantes. Máximo 60 palavras no total.`,
+      `"nota" (número de 0 a 100 avaliando a fala do aluno).`,
+      `Use vocabulário simples e adequado a iniciantes. Máximo 80 palavras no total.`,
     ].join(" ");
 
     const mensagens = [
@@ -78,10 +81,11 @@ export const conversarComProfessor = createServerFn({ method: "POST" })
         resposta: parsed.resposta ?? "",
         traducao: parsed.traducao ?? "",
         correcao: parsed.correcao ?? "",
+        fraseCorrigida: parsed.fraseCorrigida ?? "",
         nota: typeof parsed.nota === "number" ? Math.max(0, Math.min(100, parsed.nota)) : 80,
         dica: parsed.dica ?? "",
       };
     } catch {
-      return { resposta: bruto, traducao: "", correcao: "", nota: 80, dica: "" };
+      return { resposta: bruto, traducao: "", correcao: "", fraseCorrigida: "", nota: 80, dica: "" };
     }
   });
