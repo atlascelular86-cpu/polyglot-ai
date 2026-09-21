@@ -1,4 +1,3 @@
-import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 
 import { conversarComProfessor, type RespostaProfessor } from "@/lib/professor.functions";
@@ -31,7 +30,7 @@ const ONDAS = ["h-6", "h-10", "h-4", "h-12", "h-7", "h-11", "h-5", "h-9"];
 const ATRASOS = ["0s", ".1s", ".2s", ".15s", ".3s", ".05s", ".25s", ".12s"];
 
 export function ProfessorIA({ idioma, topico }: { idioma: Language; topico: string }) {
-  const conversar = useServerFn(conversarComProfessor);
+  const conversar = conversarComProfessor;
   const [historico, setHistorico] = useState<Turno[]>([]);
   const [feedback, setFeedback] = useState<RespostaProfessor | null>(null);
   const [texto, setTexto] = useState("");
