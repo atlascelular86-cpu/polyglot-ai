@@ -12,20 +12,13 @@ import {
   PlayCircle,
   Sparkles,
   Trophy,
+  X,
   Zap,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { ProfessorIA } from "@/components/ProfessorIA";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { IDIOMAS, LICOES, RANKING, RANKING_LISTA } from "@/data/languages";
 import { cn } from "@/lib/utils";
 
@@ -63,137 +56,13 @@ function Index() {
     <div className="min-h-screen bg-cream text-ink">
       <header className="sticky top-0 z-40 border-b border-ink/10 bg-cream/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-4 py-3 sm:px-6">
-          <Sheet open={menuAberto} onOpenChange={setMenuAberto}>
-            <SheetTrigger asChild>
-              <Button className="h-10 rounded-full bg-ink px-4 text-cream hover:bg-ink/90">
-                <Menu className="size-4" />
-                Menu
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[92vw] overflow-y-auto bg-cream p-0 text-ink sm:max-w-[430px]">
-              <SheetHeader className="border-b border-ink/10 bg-ink px-5 py-5 text-left text-cream">
-                <SheetTitle className="font-display text-2xl font-extrabold text-cream">Poliglota</SheetTitle>
-                <SheetDescription className="text-cream/70">
-                  Idiomas e módulos ficam aqui para manter seu treino limpo.
-                </SheetDescription>
-              </SheetHeader>
-
-              <div className="space-y-3 p-4">
-                <div className="overflow-hidden rounded-2xl bg-mist ring-1 ring-ink/10">
-                  <Button
-                    variant="ghost"
-                    onClick={() => setSecaoAberta(secaoAberta === "idiomas" ? "modulos" : "idiomas")}
-                    className="h-auto w-full justify-between rounded-none px-4 py-4 text-left hover:bg-cream/70"
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="grid size-10 place-items-center rounded-full bg-lime text-ink ring-1 ring-ink/10">
-                        <Languages className="size-5" />
-                      </span>
-                      <span>
-                        <span className="block text-sm font-extrabold">Idiomas</span>
-                        <span className="block text-xs font-medium text-ink/55">{IDIOMAS.length} opções para estudar</span>
-                      </span>
-                    </span>
-                    <ChevronDown
-                      className={cn("size-5 transition-transform", secaoAberta === "idiomas" && "rotate-180")}
-                    />
-                  </Button>
-
-                  {secaoAberta === "idiomas" && (
-                    <div className="grid grid-cols-2 gap-2 border-t border-ink/10 p-3">
-                      {IDIOMAS.map((i) => {
-                        const ativo = i.id === idiomaId;
-                        return (
-                          <Button
-                            key={i.id}
-                            variant="ghost"
-                            onClick={() => setIdiomaId(i.id)}
-                            className={cn(
-                              "h-auto justify-start rounded-xl px-3 py-3 text-left ring-1 transition-transform hover:-translate-y-0.5",
-                              ativo
-                                ? "bg-ink text-cream ring-ink hover:bg-ink/90 hover:text-cream"
-                                : "bg-cream text-ink ring-ink/10 hover:bg-cream/80",
-                            )}
-                          >
-                            <span className="text-2xl leading-none">{i.bandeira}</span>
-                            <span className="min-w-0">
-                              <span className="block truncate text-sm font-extrabold">{i.nome}</span>
-                              <span className={cn("block text-xs", ativo ? "text-lime" : "text-ink/50")}>Nível {i.nivel}</span>
-                            </span>
-                          </Button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-
-                <div className="overflow-hidden rounded-2xl bg-mist ring-1 ring-ink/10">
-                  <Button
-                    variant="ghost"
-                    onClick={() => setSecaoAberta(secaoAberta === "modulos" ? "idiomas" : "modulos")}
-                    className="h-auto w-full justify-between rounded-none px-4 py-4 text-left hover:bg-cream/70"
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="grid size-10 place-items-center rounded-full bg-sun text-cream ring-1 ring-ink/10">
-                        <BookOpenCheck className="size-5" />
-                      </span>
-                      <span>
-                        <span className="block text-sm font-extrabold">Módulos</span>
-                        <span className="block text-xs font-medium text-ink/55">Aulas organizadas por situação</span>
-                      </span>
-                    </span>
-                    <ChevronDown
-                      className={cn("size-5 transition-transform", secaoAberta === "modulos" && "rotate-180")}
-                    />
-                  </Button>
-
-                  {secaoAberta === "modulos" && (
-                    <div className="space-y-2 border-t border-ink/10 p-3">
-                      {LICOES.map((l) => {
-                        const selecionada = l.id === licaoId;
-                        const concluida = l.estado === "concluida";
-                        const atual = l.estado === "atual";
-                        const IconeEstado = concluida ? CheckCircle2 : atual ? PlayCircle : Lock;
-                        return (
-                          <Button
-                            key={l.id}
-                            variant="ghost"
-                            onClick={() => setLicaoId(l.id)}
-                            className={cn(
-                              "h-auto w-full justify-start rounded-xl px-3 py-3 text-left ring-1 transition-transform hover:-translate-y-0.5",
-                              selecionada
-                                ? "bg-ink text-cream ring-ink hover:bg-ink/90 hover:text-cream"
-                                : "bg-cream text-ink ring-ink/10 hover:bg-cream/80",
-                            )}
-                          >
-                            <span
-                              className={cn(
-                                "grid size-9 shrink-0 place-items-center rounded-full ring-1",
-                                concluida
-                                  ? "bg-lime text-ink ring-ink/10"
-                                  : atual
-                                    ? "bg-sun text-cream ring-ink/10"
-                                    : "bg-mist text-ink/45 ring-ink/10",
-                              )}
-                            >
-                              <IconeEstado className="size-4" />
-                            </span>
-                            <span className="min-w-0 flex-1">
-                              <span className="block truncate text-sm font-extrabold">{l.titulo}</span>
-                              <span className={cn("block text-xs", selecionada ? "text-cream/65" : "text-ink/50")}>
-                                Módulo {l.id}
-                              </span>
-                            </span>
-                            <span className="text-xl leading-none">{l.icone}</span>
-                          </Button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <Button
+            onClick={() => setMenuAberto(true)}
+            className="h-10 rounded-full bg-ink px-4 text-cream hover:bg-ink/90"
+          >
+            <Menu className="size-4" />
+            Menu
+          </Button>
 
           <div>
             <span className="font-display text-2xl font-extrabold tracking-tight">Poliglota</span>
@@ -213,6 +82,147 @@ function Index() {
           </div>
         </div>
       </header>
+
+      {menuAberto && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-ink/60" onClick={() => setMenuAberto(false)} />
+          <aside className="absolute inset-y-0 left-0 flex w-[92vw] max-w-[430px] flex-col bg-cream text-ink shadow-2xl">
+            <div className="flex items-start justify-between gap-3 border-b border-ink/10 bg-ink px-5 py-5 text-cream">
+              <div>
+                <h2 className="font-display text-2xl font-extrabold">Poliglota</h2>
+                <p className="mt-1 text-sm font-medium text-cream/70">
+                  Idiomas e módulos ficam aqui para manter seu treino limpo.
+                </p>
+              </div>
+              <Button
+                size="icon"
+                onClick={() => setMenuAberto(false)}
+                aria-label="Fechar menu"
+                className="shrink-0 rounded-full bg-cream/10 text-cream ring-1 ring-cream/20 hover:bg-cream/15"
+              >
+                <X className="size-4" />
+              </Button>
+            </div>
+
+            <div className="flex-1 space-y-3 overflow-y-auto p-4">
+              <div className="overflow-hidden rounded-2xl bg-mist ring-1 ring-ink/10">
+                <Button
+                  variant="ghost"
+                  onClick={() => setSecaoAberta(secaoAberta === "idiomas" ? "modulos" : "idiomas")}
+                  className="h-auto w-full justify-between rounded-none px-4 py-4 text-left hover:bg-cream/70"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="grid size-10 place-items-center rounded-full bg-lime text-ink ring-1 ring-ink/10">
+                      <Languages className="size-5" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-extrabold">Idiomas</span>
+                      <span className="block text-xs font-medium text-ink/55">{IDIOMAS.length} opções para estudar</span>
+                    </span>
+                  </span>
+                  <ChevronDown className={cn("size-5 transition-transform", secaoAberta === "idiomas" && "rotate-180")} />
+                </Button>
+
+                {secaoAberta === "idiomas" && (
+                  <div className="grid grid-cols-2 gap-2 border-t border-ink/10 p-3">
+                    {IDIOMAS.map((i) => {
+                      const ativo = i.id === idiomaId;
+                      return (
+                        <Button
+                          key={i.id}
+                          variant="ghost"
+                          onClick={() => {
+                            setIdiomaId(i.id);
+                            setMenuAberto(false);
+                          }}
+                          className={cn(
+                            "h-auto justify-start rounded-xl px-3 py-3 text-left ring-1 transition-transform hover:-translate-y-0.5",
+                            ativo
+                              ? "bg-ink text-cream ring-ink hover:bg-ink/90 hover:text-cream"
+                              : "bg-cream text-ink ring-ink/10 hover:bg-cream/80",
+                          )}
+                        >
+                          <span className="text-2xl leading-none">{i.bandeira}</span>
+                          <span className="min-w-0">
+                            <span className="block truncate text-sm font-extrabold">{i.nome}</span>
+                            <span className={cn("block text-xs", ativo ? "text-lime" : "text-ink/50")}>Nível {i.nivel}</span>
+                          </span>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="overflow-hidden rounded-2xl bg-mist ring-1 ring-ink/10">
+                <Button
+                  variant="ghost"
+                  onClick={() => setSecaoAberta(secaoAberta === "modulos" ? "idiomas" : "modulos")}
+                  className="h-auto w-full justify-between rounded-none px-4 py-4 text-left hover:bg-cream/70"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="grid size-10 place-items-center rounded-full bg-sun text-cream ring-1 ring-ink/10">
+                      <BookOpenCheck className="size-5" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-extrabold">Módulos</span>
+                      <span className="block text-xs font-medium text-ink/55">Aulas organizadas por situação</span>
+                    </span>
+                  </span>
+                  <ChevronDown className={cn("size-5 transition-transform", secaoAberta === "modulos" && "rotate-180")} />
+                </Button>
+
+                {secaoAberta === "modulos" && (
+                  <div className="space-y-2 border-t border-ink/10 p-3">
+                    {LICOES.map((l) => {
+                      const selecionada = l.id === licaoId;
+                      const concluida = l.estado === "concluida";
+                      const atual = l.estado === "atual";
+                      const IconeEstado = concluida ? CheckCircle2 : atual ? PlayCircle : Lock;
+                      return (
+                        <Button
+                          key={l.id}
+                          variant="ghost"
+                          onClick={() => {
+                            setLicaoId(l.id);
+                            setMenuAberto(false);
+                          }}
+                          className={cn(
+                            "h-auto w-full justify-start rounded-xl px-3 py-3 text-left ring-1 transition-transform hover:-translate-y-0.5",
+                            selecionada
+                              ? "bg-ink text-cream ring-ink hover:bg-ink/90 hover:text-cream"
+                              : "bg-cream text-ink ring-ink/10 hover:bg-cream/80",
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              "grid size-9 shrink-0 place-items-center rounded-full ring-1",
+                              concluida
+                                ? "bg-lime text-ink ring-ink/10"
+                                : atual
+                                  ? "bg-sun text-cream ring-ink/10"
+                                  : "bg-mist text-ink/45 ring-ink/10",
+                            )}
+                          >
+                            <IconeEstado className="size-4" />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-extrabold">{l.titulo}</span>
+                            <span className={cn("block text-xs", selecionada ? "text-cream/65" : "text-ink/50")}>
+                              Módulo {l.id}
+                            </span>
+                          </span>
+                          <span className="text-xl leading-none">{l.icone}</span>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </aside>
+        </div>
+      )}
 
       <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <main className="min-w-0">
